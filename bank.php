@@ -55,7 +55,7 @@ function wordpress_user_registration_form_completion() {
  
         );
 
-        mail($email, 'Please Verify Your Account')
+        mail($email, 'Please Verify Your Account', 'Please click on the link below to verify your acount');
         $user = wp_insert_user( $userdata );
         echo 'Complete WordPress Registration. Goto <a href="' . get_site_url() . '/wp-login.php">login page</a>.';
     }
@@ -63,7 +63,7 @@ function wordpress_user_registration_form_completion() {
 
 function generate_four_Chars()
 {
-    # code...
+    return '1234';
 }
 function wordpress_custom_registration_form_function() {
     global $first_name, $last_name,$username, $password, $email ;
