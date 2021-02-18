@@ -32,7 +32,7 @@ function bankplugin_register_user_type() {
        'show_in_rest' => true
 
    );
-   register_post_type( 'bankplugin_movie', $args );
+   register_post_type( 'bankplugin', $args );
         
 }
 
