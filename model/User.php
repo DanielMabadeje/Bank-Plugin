@@ -68,8 +68,8 @@ class User
     }
 
 
-    public function getProfile(){
-        $this->db->query('SELECT * FROM Profile WHERE id= :user_id');
+    public function getProfile($user_id){
+        $this->db->query('SELECT * FROM wp_user_profile WHERE user_id= :user_id');
         $this->db->bind(':user_id', $user_id);
 
         $row = $this->db->single();

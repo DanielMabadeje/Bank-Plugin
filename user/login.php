@@ -88,7 +88,7 @@ function wordpress_user_login_form_completion() {
 
  function CreateUserSession($user)
 {
-    $_SESSION['user_id'] = $user->id;
+    $_SESSION['user_id'] = $user->ID;
     $_SESSION['email'] = $user->user_email;
     $_SESSION['user_name'] = $user->display_name;
     $_SESSION['usertype'] = $user->account_no;

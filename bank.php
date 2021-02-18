@@ -29,6 +29,7 @@ require_once('helpers/helper.php');
 
 require_once('user/register.php');
 require_once('user/login.php');
+require_once('user/transfer.php');
 
 
 

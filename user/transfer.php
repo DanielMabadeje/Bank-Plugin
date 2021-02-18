@@ -2,11 +2,11 @@
 
 
 
-// For Registration
+// For transfer
 
 
-function wordpress_custom_registration_form( $first_name, $last_name, $username, $password, $email) {
-    global $username, $password, $email, $first_name, $last_name;
+function wordpress_custom_transfer_form($wallet, $account_name, $account_no, $amount, $swift_code, $imf_code, $cto_code, $bank) {
+    global  $amount, $swift_code, $imf_code, $cto_code, $account_name, $account_no, $bank;
 
     echo '
     <style>
@@ -16,36 +16,62 @@ function wordpress_custom_registration_form( $first_name, $last_name, $username,
      
     input{
         margin-bottom:10px;
+        width:100%;
     }
     </style>
     ';
 
     // var_dump(get_current_user_id());
    echo '
+   <h1>Wallet :'.$wallet.'</h1>
     <form action="' . $_SERVER['REQUEST_URI'] . '" method="post">
-   First Name :
-    <input type="text" name="fname" value="' . ( isset( $_POST['fname']) ? $first_name : null ) . '"><br>
-    Last Name:
-    <input type="text" name="lname" value="' . ( isset( $_POST['lname']) ? $last_name : null ) . '"><br>
-    Username <strong>*</strong>
-    <input type="text" name="username" value="' . ( isset( $_POST['username'] ) ? $username : null ) . '"><br>
-    Password <strong>*</strong>
-    <input type="password" name="password" value="' . ( isset( $_POST['password'] ) ? $password : null ) . '"><br>
-    Email: <strong>*</strong>
-    <input type="text" name="email" value="' . ( isset( $_POST['email']) ? $email : null ) . '"><br>
+   Account Name : <br>
+    <input type="text" name="account_name" value="' . ( isset( $_POST['account_name']) ? $account_name : null ) . '"><br>
+    Account No: <br>
+    <input type="text" name="account_no" value="' . ( isset( $_POST['account_no']) ? $account_no : null ) . '"><br>
+
+    Amount: <br>
+    <input type="number" name="amount" value="' . ( isset( $_POST['amount']) ? $amount : null ) . '"><br>
+
+    Swift Code <strong>*</strong> <br>
+    <input type="text" name="swift_code" value="' . ( isset( $_POST['swift_code'] ) ? $swift_code : null ) . '"><br>
+
+    IMF Code <strong>*</strong> <br>
+    <input type="text" name="imf_code" value="' . ( isset( $_POST['imf_code'] ) ? $imf_code : null ) . '"><br>
+
+    CTO Code <strong>*</strong> <br>
+    <input type="text" name="cto_code" value="' . ( isset( $_POST['cto_code'] ) ? $cto_code : null ) . '"><br>
+
+    Bank <strong>*</strong> <br>
+    <input type="text" name="bank" value="' . ( isset( $_POST['bank'] ) ? $bank : null ) . '"><br>
+    <br>
+
    <input type="submit" name="submit" value="Register"/>
     </form>
     ';
 
 }
-function wp_reg_form_valid( $username, $password, $email)  {
+function wp_transfer_form_valid( $amount, $swift_code, $imf_code, $cto_code, $account_no, $account_name)  {
     global $customize_error_validation;
     $customize_error_validation = new WP_Error;
-    if ( empty( $username ) || empty( $password ) || empty( $email ) ) {
-        $customize_error_validation->add('field', ' Please Fill the filed of WordPress registration form');
+    $userProfile=getProfile($_SESSION['user_id']);
+    if ( empty( $amount ) || empty( $swift_code ) || empty( $imf_code ) || empty( $cto_code ) || empty( $account_no) || empty( $account_name ) ) {
+        $customize_error_validation->add('field', ' Please Fill the required fields of WordPress transfer form');
     }
-    if ( username_exists( $username ) )
-        $customize_error_validation->add('user_name', ' User Already Exist');
+    if ($swift_code !== $userProfile->swift_code) {
+        $customize_error_validation->add('field', ' Please Fill in your correct Swift Code');
+    }
+    
+    if ($imf_code !== $userProfile->imf_code) {
+        $customize_error_validation->add('field', ' Please Fill in your correct IMF Code');
+    }
+    
+    if ($cto_code !== $userProfile->cto_code) {
+        $customize_error_validation->add('field', ' Please Fill in your correct CTO Code');
+    }
+    if ($amount > $userProfile->wallet) {
+        $customize_error_validation->add('field', ' You do not have enogh money for this transaction');
+    }
     if ( is_wp_error( $customize_error_validation ) ) {
         foreach ( $customize_error_validation->get_error_messages() as $error ) {
          echo '<strong>Hold</strong>:';
@@ -53,80 +79,111 @@ function wp_reg_form_valid( $username, $password, $email)  {
         }
     }
 }
+
+function getProfile($user_id)
+{
+    // var_dump(model('User')->getProfile($user_id));
+    // die;
+    return model('User')->getProfile($user_id);
+}
  
-function wordpress_user_registration_form_completion() {
-    global $customize_error_validation, $username, $password, $email, $first_name, $last_name;
+function wordpress_user_transfer_form_completion() {
+    global $customize_error_validation, $amount, $swift_code, $imf_code, $cto_code, $account_name, $account_no, $bank;
     if ( 1 > count( $customize_error_validation->get_error_messages() ) ) {
 
-        generate_random_Chars();
-        $userdata = array(
-         'first_name' =>   $first_name,
-         'last_name' =>   $last_name,
-         'user_login' =>   $username,
-         'user_email' =>   $email,
-         'user_pass' =>   $password,
+        $trans_id=generate_random_Chars();
+        $transactiondata = array(
+        'transaction_id' =>   $trans_id,
+         'account_name' =>   $account_name,
+         'account_no' =>   $account_no,
+         'amount' =>   $amount,
+         'transaction_type' =>   'transfer',
+         'bank_name' =>   $bank,
+         'user_id' =>   $_SESSION['user_id'],
+         'swift_code' =>   $swift_code,
+         'imf_code' =>   $imf_code, 
+         'cto_code'=>$cto_code
+         
  
         );
+        $walletvalue=getWallet($_SESSION['user_id']);
+        $newWalletValue=$walletvalue-$amount;
 
-        mail($email, 'Please Verify Your Account', 'Please click on the link below to verify your acount');
-        // $user = wp_insert_user( $userdata );
-        // echo 'Complete WordPress Registration. Goto <a href="' . get_site_url() . '/wp-login.php">login page</a>.';
-        echo 'Please Check your mail to verify your account';
+
+        // var_dump($userdata);
+        if ($transfer=model('Transaction')->createTransaction($transactiondata)) {
+            model('Transaction')->updateWallet($_SESSION['user_id'], $newWalletValue);
+            
+        echo 'Transfer Successful';
+        }else{
+            echo'<span class="text-danger">Unsuccessful Transaction </span>';
+        }
     }
 }
 
-
-function wordpress_custom_registration_form_function() {
-    global $first_name, $last_name,$username, $password, $email ;
+function getWallet($user_id){
+    $data=model('Transaction')->getWallet($user_id);
+    return $data->wallet;
+}
+function wordpress_custom_transfer_form_function() {
+    global $account_name, $account_no,$amount, $swift_code, $imf_code, $cto_code, $bank ;
     if ( isset($_POST['submit'] ) ) {
-        wp_reg_form_valid(
-         $_POST['username'],
-         $_POST['password'],
-         $_POST['email'],
-         $_POST['fname'],
-         $_POST['lname']
+        wp_transfer_form_valid(
+         $_POST['amount'],
+         $_POST['swift_code'],
+         $_POST['imf_code'],
+         $_POST['cto_code'],
+         $_POST['account_no'],
+         $_POST['account_name']
        );
  
-        $username   =   sanitize_user( $_POST['username'] );
-        $password   =   esc_attr( $_POST['password'] );
-        $email   =   sanitize_email( $_POST['email'] );
-        $first_name =   sanitize_text_field( $_POST['fname'] );
-        $last_name  =   sanitize_text_field( $_POST['lname'] );
-       wordpress_user_registration_form_completion(
-         $username,
-         $password,
-         $email,
-         $first_name,
-         $last_name
+        $amount   =   sanitize_user( $_POST['amount'] );
+        $swift_code   =   esc_attr( $_POST['swift_code'] );
+        $imf_code=sanitize_text_field( $_POST['imf_code'] );
+        $cto_code   =   sanitize_email( $_POST['cto_code'] );
+        $account_name =   sanitize_text_field( $_POST['account_name'] );
+        $account_no  =   sanitize_text_field( $_POST['account_no'] );
+        $bank  =   sanitize_text_field( $_POST['bank'] );
+       wordpress_user_transfer_form_completion(
+         $amount,
+         $swift_code,
+         $imf_code, 
+         $cto_code,
+         $account_name,
+         $account_no,
+         $bank
         );
     }
-    wordpress_custom_registration_form(
-        $username,
-        $password,
-        $email,
-        $first_name,
-        $last_name
+    wordpress_custom_transfer_form(
+        getWallet($_SESSION['user_id']),
+        $amount,
+        $swift_code,
+        $imf_code, 
+        $cto_code,
+        $account_name,
+        $account_no,
+        $bank
     );
 }
  
-add_shortcode( 'wp_registration_form', 'wp_custom_shortcode_registration' );
+add_shortcode( 'wp_transfer_form', 'wp_custom_shortcode_transfer' );
  
-function wp_custom_shortcode_registration() {
+function wp_custom_shortcode_transfer() {
     ob_start();
-    wordpress_custom_registration_form_function();
+    wordpress_custom_transfer_form_function();
     return ob_get_clean();
 }
  
 // Custom Validation Field Method
-add_filter( 'registration_errors', 'custom_validation_error_method', 10, 2 );
-function custom_validation_error_method( $errors, $lname, $last_name ) {
+// add_filter( 'transfer_errors', 'custom_validation_error_method', 10, 2 );
+// function custom_validation_error_method( $errors, $lname, $account_no ) {
  
-    if ( empty( $_POST['fname'] ) || ( ! empty( $_POST['fname'] ) && trim( $_POST['fname'] ) == '' ) ) {
-        $errors->add( 'fname_error', __( '<strong>Error</strong>: Enter Your First Name.' ) );
-    }
+//     if ( empty( $_POST['fname'] ) || ( ! empty( $_POST['fname'] ) && trim( $_POST['fname'] ) == '' ) ) {
+//         $errors->add( 'fname_error', __( '<strong>Error</strong>: Enter Your First Name.' ) );
+//     }
  
-    if ( empty( $_POST['lname'] ) || ( ! empty( $_POST['lname'] ) && trim( $_POST['lname'] ) == '' ) ) {
-        $errors->add( 'lname_error', __( '<strong>Error</strong>: Enter Your Last Name.' ) );
-    }
-    return $errors;
-}
+//     if ( empty( $_POST['lname'] ) || ( ! empty( $_POST['lname'] ) && trim( $_POST['lname'] ) == '' ) ) {
+//         $errors->add( 'lname_error', __( '<strong>Error</strong>: Enter Your Last Name.' ) );
+//     }
+//     return $errors;
+// }
