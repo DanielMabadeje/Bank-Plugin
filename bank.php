@@ -8,7 +8,8 @@
  */
 
 
- require_once('admin/registerposttype.php');
+ require_once('admin/editUser.php');
+ require_once('admin/getUsers.php');
 
 
 
