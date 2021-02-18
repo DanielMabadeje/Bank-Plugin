@@ -55,6 +55,8 @@ function wp_log_form_valid( $username, $password)  {
 function wordpress_user_login_form_completion() {
     global $customize_error_validation, $username, $password;
     if ( 1 > count( $customize_error_validation->get_error_messages() ) ) {
+
+        // die($password);
         $userdata = array(
          'user_login' =>   $username,
          'user_email' =>   $email,
@@ -70,10 +72,10 @@ function wordpress_user_login_form_completion() {
 
         // mail($email, 'Please Verify Your Account', 'Please click on the link below to verify your acount');
         // $user = wp_insert_user( $userdata );
+        // die($userdata['user_pass']);
 
-        if ($user=model('User')->login($userdata['user_email'], $userdata['user_pass'])) {
-            // die('yes');
-            # code...
+        if ($user=model('User')->login($userdata['user_login'], $userdata['user_pass'])) {
+            CreateUserSession($user);
 
             redirect(get_site_url());
         } else {
@@ -84,9 +86,12 @@ function wordpress_user_login_form_completion() {
     }
 }
 
-public function CreateUserSession(Type $var = null)
+ function CreateUserSession($user)
 {
-    # code...
+    $_SESSION['user_id'] = $user->id;
+    $_SESSION['email'] = $user->user_email;
+    $_SESSION['user_name'] = $user->display_name;
+    $_SESSION['usertype'] = $user->account_no;
 }
 
 function wordpress_custom_login_form_function() {

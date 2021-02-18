@@ -12,6 +12,7 @@ class User
     {
         $this->db = new Database;
         $this->query = new WP_Query('cat=12');
+        require_once( ABSPATH . WPINC . '/class-phpass.php');
     }
 
 
@@ -46,7 +47,10 @@ class User
         $this->db->bind(':email', $email);
         $row = $this->db->single();
         $hashed_password = $row->user_pass;
-        if (password_verify($password, $hashed_password)) {
+
+        
+        $wp_hasher = new PasswordHash(8, TRUE);
+        if ($wp_hasher->CheckPassword($password, $hashed_password)) {
             return $row;
         } else {
             return false;
