@@ -56,13 +56,17 @@ function wordpress_user_login_form_completion() {
     global $customize_error_validation, $username, $password, $email, $first_name, $last_name;
     if ( 1 > count( $customize_error_validation->get_error_messages() ) ) {
         $userdata = array(
-         'first_name' =>   $first_name,
-         'last_name' =>   $last_name,
          'user_login' =>   $username,
          'user_email' =>   $email,
          'user_pass' =>   $password,
  
         );
+        // if(filter_var($username, FILTER_VALIDATE_EMAIL)) {
+        //     $userdata
+        // }
+        // else {
+        //     // it's not valid so do something else
+        // }
 
         mail($email, 'Please Verify Your Account', 'Please click on the link below to verify your acount');
         $user = wp_insert_user( $userdata );
