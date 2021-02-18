@@ -16,3 +16,7 @@ For  Transactions
 transfers
 [wp_transfer_form]
 
+Transaction History
+
+[wp_transaction_history]
+
