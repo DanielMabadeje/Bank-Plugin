@@ -81,6 +81,12 @@ function my_get_user_menu() {
 
         <?php
     }
+    ?>
+
+    </tbody>
+    </table>
+
+    <?php
     
     }
     
