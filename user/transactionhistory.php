@@ -1,27 +1,45 @@
 <?php
 
 function view_transaction_history(){
-    global;
+    
     $user_id=$_SESSION['user_id'];
-    // $data=model('Transaction')->getAllTransactions($user_id);
+    $data=model('Transaction')->getAllTransactions($user_id);
 
-    ?>
+    // var_dump($data);
+    echo'    
     <table class="table text-left">
                                 <thead>
                                     <tr>
-                                        <th> Name </th>
-                                        <th> Email </th>
+                                        <th> Transaction Id </th>
+                                        <th> Account Name </th>
                                         <th> Account No</th>
-                                        <th> Swift Code </th>
-                                        <th> Imf Code </th>
-                                        <th> Cto Code </th>
-                                        <th> Wallet </th>
-                                        <th> Action </th>
+                                        <th> Amount </th>
+                                        <th> Transaction Type </th>
+                                        <th> Bank </th>
+                                        <th> TimeStamp </th>
                                     </tr>
                                 </thead>
-                                <tbody id="order">
+                                <tbody id="order">';
 
-    <?php
+    foreach ($data as $key => $value) {
+      echo  '<tr>
+
+    <td>'. $value->transaction_id .'</td>
+            <td>'. $value->account_name .'</td>
+            <td>'. $value->account_no .'</td>
+                                            <td>'. $value->amount .'</td>
+                                            <td>'.$value->transaction_type .'</td>
+                                            <td>'. $value->bank_name .'</td>
+                                            <td>'.$value->created_at .'</td>
+                                            
+                                            
+                                        </tr>
+
+        ';
+    }
+
+    echo '</tbody>
+    </table>';
 
 }
 
@@ -33,6 +51,6 @@ add_shortcode( 'wp_transaction_history', 'wp_custom_shortcode_transaction_histor
 
 function wp_custom_shortcode_transaction_history() {
    ob_start();
-   wordpress_custom_transfer_history_function();
+   wordpress_custom_transaction_history_function();
    return ob_get_clean();
 }
