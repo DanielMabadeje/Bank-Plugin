@@ -7,8 +7,12 @@ For Registration Snippet shortcode
 
 For Login shortcode
 
-
+[wp_login_form]
 
 
 For  Transactions
+
+
+transfers
+[wp_transfer_form]
 
