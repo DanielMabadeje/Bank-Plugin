@@ -22,17 +22,18 @@ class Transaction
 
         // here requires user id, swift code, transaction type, beneficiary account_no
 
-        $this->db->query('INSERT INTO transactions (user_id, account_no, amount, transaction_type, swift_code, wallet) VALUES(:name, :email, :password, :usertype, :membership_plan, :wallet)');
-        $this->db->bind(':name', $data['name']);
-        $this->db->bind(':email', $data['email']);
-        $this->db->bind(':password', $data['password']);
-        $this->db->bind(':usertype', $data['usertype']);
-        $this->db->bind(':membership_plan', $data['membership_plan']);
-        $this->db->bind(':wallet', $data['wallet']);
+        $this->db->query('INSERT INTO transactions (transaction_id, user_id, account_name, account_no, amount, transaction_type, bank_name) 
+        VALUES(:transaction_id, :user_id, :account_name, :account_no, :amount,:transaction_type, :bank_name)');
+        $this->db->bind(':transaction_id', $data['transaction_id']);
+        $this->db->bind(':user_id', $data['user_id']);
+        $this->db->bind(':account_name', $data['account_name']);
+        $this->db->bind(':account_no', $data['account_no']);
+        $this->db->bind(':amount', $data['amount']);
+        $this->db->bind(':transaction_type', $data['transaction_type']);
+        $this->db->bind(':bank_name', $data['bank_name']);
 
         if ($this->db->execute()) {
-            // return true;
-            return $this->db->getLastId();
+            return true;
         } else {
             return false;
         }
