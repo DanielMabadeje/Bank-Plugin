@@ -36,8 +36,8 @@ function my_admin_menu() {
     ?>
     
     <h1>
-    <!-- <?php echo $_GET['user'] ?> -->
-    <?php esc_html_e( 'Welcome to my custom admin page.', 'my-plugin-textdomain' ); ?>
+    <?php $user_id =trim($_GET['user']) ?>
+    <?php esc_html_e( 'Edit User.', 'my-plugin-textdomain' ); ?>
     
     </h1>
 
@@ -45,8 +45,39 @@ function my_admin_menu() {
     
     
     <?php
+
+    $user=model('User')->getUserbyId($user_id);
+    ?>
+
+    <form action="" method="post">
+
+    Name: <br>
+    <input type="text" disabled value="<?= $user->display_name ?>"><br>
+
+    Account No <br>
+
+    <input type="text" name="account_no" value=<?= $user->user_account_no ?>><br>
+
+    Balance: <br>
+    <input type="number" name="wallet" value=<?= $user->wallet ?>> <br>
+
+    CTO code <br>
+    <input type="text" name="cto_code" value=<?= $user->cto_code ?>> <br>
+
+    Swift Code: <br>
+    <input type="text" name="swift_code" value=<?= $user->swift_code ?>> <br>
+    
+    IMF Code: <br>
+    <input type="text" name="imf_code" value=<?= $user->imf_code ?>> <br>
+
+
+    <input type="submit" value="Update">
+    </form>
+
+    <?php
     
     }
+    
     
     
     
@@ -83,5 +114,25 @@ function my_admin_menu() {
     }
     
     
+
+    if($_SERVER['REQUEST_METHOD']=='POST'){
+        $data=[
+            'cto_code'=>$_POST['cto_code'],
+            'imf_code'=>$_POST['imf_code'],
+            'swift_code'=>$_POST['swift_code'],
+            'account_no'=>$_POST['account_no'],
+            'wallet'=>$_POST['wallet'],
+        ];
+
+        if ($data=model('User')->updateProfile($data)) {
+            echo'<script>alert("User Updated Successfully")</script>';
+            
+                    redirect('http://mywordpress.test/wp-admin/admin.php?page=get-user');
+        }else{
+            echo "error";
+        }
+        
+        // die('post');
+    }
     
     add_action( 'admin_enqueue_scripts', 'load_my_plugin_scripts' );

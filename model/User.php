@@ -11,7 +11,7 @@ class User
     public function __construct()
     {
         $this->db = new Database;
-        $this->query = new WP_Query('cat=12');
+        // $this->query = new WP_Query('cat=12');
         require_once( ABSPATH . WPINC . '/class-phpass.php');
     }
 
@@ -60,7 +60,9 @@ class User
 
     public function getUserbyId($user_id)
     {
-        $this->db->query('SELECT * FROM users WHERE id= :user_id');
+        $this->db->query('SELECT user.display_name, user.ID, profile.user_id, profile.wallet, user.user_account_no, profile.cto_code, profile.swift_code, profile.imf_code FROM wp_users AS user
+        INNER JOIN wp_user_profile AS profile
+        ON user.ID=profile.user_id WHERE user.ID= :user_id');
         $this->db->bind(':user_id', $user_id);
 
         $row = $this->db->single();
@@ -83,16 +85,44 @@ class User
         INNER JOIN wp_user_profile AS profile
         ON user.ID=profile.user_id');
 
-var_dump($this->db->resultSet());
-die;
-        // return $this->db->resultSet();
+
+        return $this->db->resultSet();
     }
 
-    public function createProfile()
+    public function createProfile($user_id)
     {
-        $this->db->query('INSERT INTO wp_user_profile (name, email, password, usertype, membership_plan, wallet) VALUES(:name, :email, :password, :usertype, :membership_plan, :wallet)');
-        $this->db->bind(':name', $data['name']);
-        $this->db->bind(':email', $data['email']);
+        $this->db->query('INSERT INTO wp_user_profile (user_id) VALUES(:user_id)');
+        $this->db->bind(':user_id', $user_id);
+        // $this->db->bind(':email', $data['email']);
+
+        if ($this->db->execute()) {
+            return true;
+        }else{
+            return false;
+        }
     }
 
+    public function updateProfile($data)
+    {
+        $this->db->query("UPDATE wp_user_profile 
+        SET wallet=:wallet,
+        cto_code=:cto_code,
+        swift_code=:swift_code,
+        imf_code=:imf_code
+        
+        WHERE user_id=:user_id");
+
+$this->db->bind(':wallet', $data['wallet']);
+$this->db->bind(':user_id', $data['user_id']);
+$this->db->bind(':swift_code', $data['swift_code']);
+$this->db->bind(':cto_code', $data['cto_code']);
+$this->db->bind(':imf_code', $data['imf_code']);
+
+
+    if ($this->db->execute()) {
+        return true;
+    }else{
+        return false;
+    }
+}
 }
