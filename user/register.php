@@ -56,6 +56,8 @@ function wp_reg_form_valid( $username, $password, $email)  {
 function wordpress_user_registration_form_completion() {
     global $customize_error_validation, $username, $password, $email, $first_name, $last_name;
     if ( 1 > count( $customize_error_validation->get_error_messages() ) ) {
+
+        $verify_code=generate_random_Chars();
         $userdata = array(
          'first_name' =>   $first_name,
          'last_name' =>   $last_name,
@@ -65,7 +67,9 @@ function wordpress_user_registration_form_completion() {
  
         );
 
-        mail($email, 'Please Verify Your Account', 'Please click on the link below to verify your acount');
+        mail($email, 'Please Verify Your Account', 'Please click on the link below to verify your acount
+        
+        '.get_site_url().'/verify/?verificationcode='.$verify_Code);
         $user = wp_insert_user( $userdata );
         echo 'Complete WordPress Registration. Goto <a href="' . get_site_url() . '/wp-login.php">login page</a>.';
     }

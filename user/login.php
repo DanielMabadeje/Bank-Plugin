@@ -4,8 +4,8 @@
 // For login
 
 
-function wordpress_custom_login_form( $first_name, $last_name, $username, $password, $email) {
-    global $username, $password, $email, $first_name, $last_name;
+function wordpress_custom_login_form($username, $password) {
+    global $username, $password;
 
     echo '
     <style>
@@ -36,14 +36,14 @@ function wordpress_custom_login_form( $first_name, $last_name, $username, $passw
     ';
 
 }
-function wp_log_form_valid( $username, $password, $email)  {
+function wp_log_form_valid( $username, $password)  {
     global $customize_error_validation;
     $customize_error_validation = new WP_Error;
-    if ( empty( $username ) || empty( $password ) || empty( $email ) ) {
-        $customize_error_validation->add('field', ' Please Fill the filed of WordPress login form');
+    if ( empty( $username ) || empty( $password ) ) {
+        $customize_error_validation->add('field', ' Please Fill the field of the login form');
     }
-    if ( username_exists( $username ) )
-        $customize_error_validation->add('user_name', ' User Already Exist');
+    // if ( username_exists( $username ) )
+    //     $customize_error_validation->add('user_name', ' User Already Exist');
     if ( is_wp_error( $customize_error_validation ) ) {
         foreach ( $customize_error_validation->get_error_messages() as $error ) {
          echo '<strong>Hold</strong>:';
@@ -53,7 +53,7 @@ function wp_log_form_valid( $username, $password, $email)  {
 }
  
 function wordpress_user_login_form_completion() {
-    global $customize_error_validation, $username, $password, $email, $first_name, $last_name;
+    global $customize_error_validation, $username, $password;
     if ( 1 > count( $customize_error_validation->get_error_messages() ) ) {
         $userdata = array(
          'user_login' =>   $username,
@@ -68,10 +68,25 @@ function wordpress_user_login_form_completion() {
         //     // it's not valid so do something else
         // }
 
-        mail($email, 'Please Verify Your Account', 'Please click on the link below to verify your acount');
-        $user = wp_insert_user( $userdata );
-        echo 'Complete WordPress login. Goto <a href="' . get_site_url() . '/wp-login.php">login page</a>.';
+        // mail($email, 'Please Verify Your Account', 'Please click on the link below to verify your acount');
+        // $user = wp_insert_user( $userdata );
+
+        if ($user=model('User')->login($userdata['user_email'], $userdata['user_pass'])) {
+            // die('yes');
+            # code...
+
+            redirect(get_site_url());
+        } else {
+            echo 'Invalid Login Details';
+        }
+        
+        
     }
+}
+
+public function CreateUserSession(Type $var = null)
+{
+    # code...
 }
 
 function wordpress_custom_login_form_function() {
@@ -79,31 +94,20 @@ function wordpress_custom_login_form_function() {
     if ( isset($_POST['submit'] ) ) {
         wp_log_form_valid(
          $_POST['username'],
-         $_POST['password'],
-         $_POST['email'],
-         $_POST['fname'],
-         $_POST['lname']
+         $_POST['password']
        );
  
         $username   =   sanitize_user( $_POST['username'] );
         $password   =   esc_attr( $_POST['password'] );
-        $email   =   sanitize_email( $_POST['email'] );
-        $first_name =   sanitize_text_field( $_POST['fname'] );
-        $last_name  =   sanitize_text_field( $_POST['lname'] );
+        // $email   =   sanitize_email( $_POST['email'] );
        wordpress_user_login_form_completion(
          $username,
-         $password,
-         $email,
-         $first_name,
-         $last_name
+         $password
         );
     }
     wordpress_custom_login_form(
         $username,
-        $password,
-        $email,
-        $first_name,
-        $last_name
+        $password
     );
 }
  

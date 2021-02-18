@@ -75,11 +75,7 @@ function wordpress_user_registration_form_completion() {
     }
 }
 
-function generate_random_Chars()
-{
-    $charset = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
-    return substr(str_shuffle($charset), 0, 8);
-}
+
 function wordpress_custom_registration_form_function() {
     global $first_name, $last_name,$username, $password, $email ;
     if ( isset($_POST['submit'] ) ) {
