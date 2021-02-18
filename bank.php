@@ -8,8 +8,7 @@
  */
 
 
- require_once('admin/editUser.php');
- require_once('admin/getUser.php');
+ 
 
 
 
@@ -27,6 +26,10 @@ require_once('config/config.php');
 require_once('model/Database.php');
 // require_once('model/User.php');
 require_once('helpers/helper.php');
+
+
+require_once('admin/editUser.php');
+require_once('admin/getUser.php');
 
 require_once('user/register.php');
 require_once('user/login.php');

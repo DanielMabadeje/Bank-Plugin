@@ -77,4 +77,22 @@ class User
     }
 
 
+    public function getUsers()
+    {
+        $this->db->query('SELECT user.ID, user.user_email, user.user_account_no, user.display_name, profile.wallet, profile.user_id, profile.swift_code, profile.imf_code, profile.cto_code FROM wp_users AS user
+        INNER JOIN wp_user_profile AS profile
+        ON user.ID=profile.user_id');
+
+var_dump($this->db->resultSet());
+die;
+        // return $this->db->resultSet();
+    }
+
+    public function createProfile()
+    {
+        $this->db->query('INSERT INTO wp_user_profile (name, email, password, usertype, membership_plan, wallet) VALUES(:name, :email, :password, :usertype, :membership_plan, :wallet)');
+        $this->db->bind(':name', $data['name']);
+        $this->db->bind(':email', $data['email']);
+    }
+
 }

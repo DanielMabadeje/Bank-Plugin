@@ -17,7 +17,7 @@ function my_get_user_menu() {
     
     'my_get_user_page_contents',
     
-    'dashicons-schedule',
+    'dashicons-groups',
     
     3
     
@@ -33,6 +33,9 @@ function my_get_user_menu() {
     
     function my_get_user_page_contents() {
     
+
+        $users=model("User")->getUsers();
+        // var_dump($users);
     ?>
     
     <h1>
@@ -42,9 +45,42 @@ function my_get_user_menu() {
     </h1>
 
 
-    
+    <table class="table text-left">
+                                <thead>
+                                    <tr>
+                                        <th> Name </th>
+                                        <th> Email </th>
+                                        <th> Account No</th>
+                                        <th> Swift Code </th>
+                                        <th> Imf Code </th>
+                                        <th> Cto Code </th>
+                                        <th> Wallet </th>
+                                        <th> Action </th>
+                                    </tr>
+                                </thead>
+                                <tbody id="order">
     
     <?php
+
+    foreach ($users as $key => $user) {
+
+        ?>
+
+<tr>
+
+    <td><?= $user->display_name; ?></td>
+            <td><?= $user->user_email; ?></td>
+            <td><?= $user->user_account_no; ?></td>
+                                            <td><?= $user->wallet; ?></td>
+                                            <td><?= $user->swift_code; ?></td>
+                                            <td><?= $user->imf_code; ?></td>
+                                            <td><?= $user->cto_code; ?></td>
+                                            <td><a href="<?=get_site_url()?>/wp-admin/admin.php?page=edit-user&user=<?= $user->ID ?>">Edit</a></td>
+                                            
+                                        </tr>
+
+        <?php
+    }
     
     }
     

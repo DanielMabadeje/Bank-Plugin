@@ -20,6 +20,8 @@ function wordpress_custom_registration_form( $first_name, $last_name, $username,
     ';
 
     // var_dump(get_current_user_id());
+    // $lastid = $wpdb->insert_id;
+    var_dump();
    echo '
     <form action="' . $_SERVER['REQUEST_URI'] . '" method="post">
    First Name :
@@ -67,10 +69,12 @@ function wordpress_user_registration_form_completion() {
  
         );
 
+        
         mail($email, 'Please Verify Your Account', 'Please click on the link below to verify your acount
         
         '.get_site_url().'/verify/?verificationcode='.$verify_Code);
         $user = wp_insert_user( $userdata );
+        // $lastid = $wpdb->insert_id;
         echo 'Complete WordPress Registration. Goto <a href="' . get_site_url() . '/wp-login.php">login page</a>.';
     }
 }

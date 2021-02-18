@@ -17,7 +17,7 @@ function my_admin_menu() {
     
     'my_admin_page_contents',
     
-    'dashicons-schedule',
+    'dashicons-edit-large',
     
     3
     
@@ -36,7 +36,7 @@ function my_admin_menu() {
     ?>
     
     <h1>
-    
+    <!-- <?php echo $_GET['user'] ?> -->
     <?php esc_html_e( 'Welcome to my custom admin page.', 'my-plugin-textdomain' ); ?>
     
     </h1>
