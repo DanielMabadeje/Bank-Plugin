@@ -63,4 +63,13 @@ if ($this->db->execute()) {
         $row = $this->db->single();
         return $row;
     }
+
+    public function getAllTransactions($user_id)
+    {
+        $this->db->query('SELECT * FROM wp_transactions WHERE user_id= :user_id');
+        $this->db->bind(':user_id', $user_id);
+
+        $row = $this->db->resultSet();
+        return $row;
+    }
 }

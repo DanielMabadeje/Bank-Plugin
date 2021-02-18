@@ -109,7 +109,6 @@ class User
         cto_code=:cto_code,
         swift_code=:swift_code,
         imf_code=:imf_code
-        
         WHERE user_id=:user_id");
 
 $this->db->bind(':wallet', $data['wallet']);
@@ -124,5 +123,22 @@ $this->db->bind(':imf_code', $data['imf_code']);
     }else{
         return false;
     }
+}
+
+public function updateUserAccountNo($data)
+{
+    $this->db->query("UPDATE wp_users
+    SET user_account_no=:account_no
+    WHERE ID=:user_id ");
+
+$this->db->bind(':account_no', $data['account_no']);
+$this->db->bind(':user_id', $data['user_id']);
+
+if ($this->db->execute()) {
+    return true;
+} else {
+    # code...
+}
+
 }
 }

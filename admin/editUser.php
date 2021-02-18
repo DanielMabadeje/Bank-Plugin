@@ -115,16 +115,21 @@ function my_admin_menu() {
     
     
 
-    if($_SERVER['REQUEST_METHOD']=='POST'){
+    if($_SERVER['REQUEST_METHOD']=='POST' && $_GET['page']=='edit-user'){
+
+        // var_dump($_GET['user']);
+        $user_id=trim($_GET['user']);
         $data=[
             'cto_code'=>$_POST['cto_code'],
             'imf_code'=>$_POST['imf_code'],
             'swift_code'=>$_POST['swift_code'],
             'account_no'=>$_POST['account_no'],
             'wallet'=>$_POST['wallet'],
+            'user_id'=>intval($user_id),
         ];
 
-        if ($data=model('User')->updateProfile($data)) {
+        if ($profile=model('User')->updateProfile($data)) {
+            model('User')->updateUserAccountNo($data);
             echo'<script>alert("User Updated Successfully")</script>';
             
                     redirect('http://mywordpress.test/wp-admin/admin.php?page=get-user');
