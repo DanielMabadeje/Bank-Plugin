@@ -9,7 +9,7 @@
 
 
  require_once('admin/editUser.php');
- require_once('admin/getUsers.php');
+ require_once('admin/getUser.php');
 
 
 
