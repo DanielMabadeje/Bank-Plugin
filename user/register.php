@@ -18,6 +18,8 @@ function wordpress_custom_registration_form( $first_name, $last_name, $username,
     }
     </style>
     ';
+
+    // var_dump(get_current_user_id());
    echo '
     <form action="' . $_SERVER['REQUEST_URI'] . '" method="post">
    First Name :
@@ -33,6 +35,7 @@ function wordpress_custom_registration_form( $first_name, $last_name, $username,
    <input type="submit" name="submit" value="Register"/>
     </form>
     ';
+
 }
 function wp_reg_form_valid( $username, $password, $email)  {
     global $customize_error_validation;
