@@ -6,10 +6,11 @@
 function wordpress_custom_transfer_form($wallet, $account_name, $account_no, $amount, $swift_code, $imf_code, $cto_code, $bank) {
     global  $amount, $swift_code, $imf_code, $cto_code, $account_name, $account_no, $bank;
 
-    // var_dump(get_current_user_id());
-    $wallet = getWallet($_SESSION['user_id']);
-
-    var_dump($wallet, $_SESSION['user_id']);
+    if (!isLoggedIn()) {
+        echo '<script>alert("You are not logged in")</script>';
+        redirect(get_site_url());
+    }
+    
     ?>
         <h1>Wallet :<?= $wallet ?></h1>
         <form class="form custom_form" action="<?= $_SERVER['REQUEST_URI'] ?>" method="post">
