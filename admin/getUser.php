@@ -40,7 +40,7 @@ function my_get_user_menu() {
     
     <h1>
     
-    <?php esc_html_e( 'Welcome to my custom admin page.', 'my-plugin-textdomain' ); ?>
+    <?php esc_html_e( 'Get Users.', 'my-plugin-textdomain' ); ?>
     
     </h1>
 
