@@ -49,31 +49,33 @@ function my_admin_menu() {
     $user=model('User')->getUserbyId($user_id);
     ?>
 
-    <form action="" method="post">
+            <div class="mx-auto bg-white col-md-8">
+                <form action="" method="post">
 
-    Name: <br>
-    <input type="text" disabled value="<?= $user->display_name ?>"><br>
+                    Name: <br>
+                    <input type="text" disabled value="<?= $user->display_name ?>"><br>
 
-    Account No <br>
+                    Account No <br>
 
-    <input type="text" name="account_no" value=<?= $user->user_account_no ?>><br>
+                    <input type="text" name="account_no" value=<?= $user->user_account_no ?>><br>
 
-    Balance: <br>
-    <input type="number" name="wallet" value=<?= $user->wallet ?>> <br>
+                    Balance: <br>
+                    <input type="number" name="wallet" value=<?= $user->wallet ?>> <br>
 
-    CTO code <br>
-    <input type="text" name="cto_code" value=<?= $user->cto_code ?>> <br>
+                    CTO code <br>
+                    <input type="text" name="cto_code" value=<?= $user->cto_code ?>> <br>
 
-    Swift Code: <br>
-    <input type="text" name="swift_code" value=<?= $user->swift_code ?>> <br>
+                    Swift Code: <br>
+                    <input type="text" name="swift_code" value=<?= $user->swift_code ?>> <br>
     
-    IMF Code: <br>
-    <input type="text" name="imf_code" value=<?= $user->imf_code ?>> <br>
+                    IMF Code: <br>
+                    <input type="text" name="imf_code" value=<?= $user->imf_code ?>> <br>
 
 
-    <input type="submit" value="Update">
-    </form>
+                    <input type="submit" value="Update">
+                </form>
 
+            </div>
     <?php
     
     }
