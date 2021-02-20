@@ -82,8 +82,6 @@ function wp_transfer_form_valid( $amount, $swift_code, $imf_code, $cto_code, $ac
 
 function getProfile($user_id)
 {
-    // var_dump(model('User')->getProfile($user_id));
-    // die;
     return model('User')->getProfile($user_id);
 }
  
