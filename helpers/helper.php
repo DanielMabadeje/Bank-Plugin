@@ -27,3 +27,11 @@ function redirect($page)
     // header('location:'.$page);
     echo '<script language="javascript">window.location.href ="'.$page.'"</script>';
 }
+
+function isLoggedIn(){
+    if (isset($_SESSION['user_id'])) {
+        return true;
+    }else{
+        return false;
+    }
+}

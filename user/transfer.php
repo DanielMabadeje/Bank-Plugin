@@ -1,7 +1,5 @@
 <?php
 
-
-
 // For transfer
 
 
@@ -9,9 +7,12 @@ function wordpress_custom_transfer_form($wallet, $account_name, $account_no, $am
     global  $amount, $swift_code, $imf_code, $cto_code, $account_name, $account_no, $bank;
 
     // var_dump(get_current_user_id());
+    $wallet = getWallet($_SESSION['user_id']);
+
+    var_dump($wallet, $_SESSION['user_id']);
     ?>
-        <h1>Wallet :<?= $wallet ?>'</h1>
-        <form action="<?= $_SERVER['REQUEST_URI'] ?>" method="post">
+        <h1>Wallet :<?= $wallet ?></h1>
+        <form class="form custom_form" action="<?= $_SERVER['REQUEST_URI'] ?>" method="post">
             Account Name : <br>
             <input type="text" name="account_name" value="<?php ( isset( $_POST['account_name']) ? $account_name : null ) ?>"><br>
             Account No: <br>
