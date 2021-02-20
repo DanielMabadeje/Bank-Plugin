@@ -8,47 +8,28 @@
 function wordpress_custom_transfer_form($wallet, $account_name, $account_no, $amount, $swift_code, $imf_code, $cto_code, $bank) {
     global  $amount, $swift_code, $imf_code, $cto_code, $account_name, $account_no, $bank;
 
-    echo '
-    <style>
-    div {
-        margin-bottom:2px;
-    }
-     
-    input{
-        margin-bottom:10px;
-        width:100%;
-    }
-    </style>
-    ';
-
     // var_dump(get_current_user_id());
-   echo '
-   <h1>Wallet :'.$wallet.'</h1>
-    <form action="' . $_SERVER['REQUEST_URI'] . '" method="post">
-   Account Name : <br>
-    <input type="text" name="account_name" value="' . ( isset( $_POST['account_name']) ? $account_name : null ) . '"><br>
-    Account No: <br>
-    <input type="text" name="account_no" value="' . ( isset( $_POST['account_no']) ? $account_no : null ) . '"><br>
-
-    Amount: <br>
-    <input type="number" name="amount" value="' . ( isset( $_POST['amount']) ? $amount : null ) . '"><br>
-
-    Swift Code <strong>*</strong> <br>
-    <input type="text" name="swift_code" value="' . ( isset( $_POST['swift_code'] ) ? $swift_code : null ) . '"><br>
-
-    IMF Code <strong>*</strong> <br>
-    <input type="text" name="imf_code" value="' . ( isset( $_POST['imf_code'] ) ? $imf_code : null ) . '"><br>
-
-    CTO Code <strong>*</strong> <br>
-    <input type="text" name="cto_code" value="' . ( isset( $_POST['cto_code'] ) ? $cto_code : null ) . '"><br>
-
-    Bank <strong>*</strong> <br>
-    <input type="text" name="bank" value="' . ( isset( $_POST['bank'] ) ? $bank : null ) . '"><br>
-    <br>
-
-   <input type="submit" name="submit" value="Register"/>
-    </form>
-    ';
+    ?>
+        <h1>Wallet :<?= $wallet ?>'</h1>
+        <form action="<?= $_SERVER['REQUEST_URI'] ?>" method="post">
+            Account Name : <br>
+            <input type="text" name="account_name" value="<?php ( isset( $_POST['account_name']) ? $account_name : null ) ?>"><br>
+            Account No: <br>
+            <input type="text" name="account_no" value="<?php ( isset( $_POST['account_no']) ? $account_no : null ) ?>"><br>
+            Amount: <br>
+            <input type="number" name="amount" value="<?php ( isset( $_POST['amount']) ? $amount : null ) ?>"><br>
+            Swift Code <strong>*</strong> <br>
+            <input type="text" name="swift_code" value="<?php ( isset( $_POST['swift_code'] ) ? $swift_code : null )?>"><br>
+            IMF Code <strong>*</strong> <br>
+            <input type="text" name="imf_code" value="<?php ( isset( $_POST['imf_code'] ) ? $imf_code : null )?>"><br>
+            CTO Code <strong>*</strong> <br>
+            <input type="text" name="cto_code" value="<?php( isset( $_POST['cto_code'] ) ? $cto_code : null ) ?>"><br>
+            Bank <strong>*</strong> <br>
+            <input type="text" name="bank" value="<?php ( isset( $_POST['bank'] ) ? $bank : null ) ?>"><br>
+            <br>
+            <input type="submit" name="submit" value="Register"/>
+        </form>
+    <?php
 
 }
 function wp_transfer_form_valid( $amount, $swift_code, $imf_code, $cto_code, $account_no, $account_name)  {
