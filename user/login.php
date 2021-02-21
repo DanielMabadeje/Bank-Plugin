@@ -25,13 +25,19 @@ function wordpress_custom_login_form($username, $password) {
 
     // var_dump(get_current_user_id());
    echo '
+   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <form action="' . $_SERVER['REQUEST_URI'] . '" method="post" class="mx-auto">
-    Username Or Email <strong>*</strong> <br>
+    <div class="form-group">
+    <label>Username Or Email <strong>*</strong></label> <br>
     <input type="text" name="username" value="' . ( isset( $_POST['username'] ) ? $username : null ) . '"><br>
-    Password <strong>*</strong> <br>
+
+    </div>
+    <div class="form-group">
+    <label>Password <strong>*</strong></label><br>
     <input type="password" name="password" value="' . ( isset( $_POST['password'] ) ? $password : null ) . '"><br>
     <br>
-    <input type="submit" name="submit" value="Login"/>
+    </div>
+    <input type="submit" name="submit" style="background-color: #dd9933; border-color: #dd9933;" value="Login"/>
     </form>
     ';
 
