@@ -52,27 +52,38 @@ function my_admin_menu() {
             <div class="mx-auto bg-white col-md-8">
                 <form action="" method="post">
 
-                    Name: <br>
-                    <input type="text" disabled value="<?= $user->display_name ?>"><br>
+                <div class="form-group col-12">
+                    <label for="name" class="display-4">Name:</label>
+                    <input type="text" class="col-12 p-2" disabled value="<?= $user->display_name ?>"><br>
+                </div>
+                <div class="form-group col-12">
+                    <label for="">Account No</label>
 
-                    Account No <br>
+                    <input type="text" class="col-12 p-2" name="account_no" value=<?= $user->user_account_no ?>><br>
+                </div>
+                <div class="form-group col-12">
+                    <label for="balance">Balance:</label>
+                    <input type="number" class="col-12 p-2" name="wallet" value=<?= $user->wallet ?>> <br>
+                </div>
 
-                    <input type="text" name="account_no" value=<?= $user->user_account_no ?>><br>
+                <div class="form-group col-12">
+                    <label for="">CTO code</label>
+                    <input type="text" class="col-12 p-2" name="cto_code" value=<?= $user->cto_code ?>> <br>
 
-                    Balance: <br>
-                    <input type="number" name="wallet" value=<?= $user->wallet ?>> <br>
+                </div>
 
-                    CTO code <br>
-                    <input type="text" name="cto_code" value=<?= $user->cto_code ?>> <br>
-
-                    Swift Code: <br>
-                    <input type="text" name="swift_code" value=<?= $user->swift_code ?>> <br>
+                <div class="form-group col-12">
+                    <label for="">Swift Code:</label>
+                    <input type="text" class="col-12 p-2" name="swift_code" value=<?= $user->swift_code ?>> <br>
+                </div>
     
-                    IMF Code: <br>
-                    <input type="text" name="imf_code" value=<?= $user->imf_code ?>> <br>
+                <div class="form-group col-12">
+                    <label for="">IMF Code:</label>
+                    <input type="text" class="col-12 p-2" name="imf_code" value=<?= $user->imf_code ?>> <br>
+                </div>
 
 
-                    <input type="submit" value="Update">
+                    <input type="submit" class="btn btn-primary ml-md-3" value="Update">
                 </form>
 
             </div>
